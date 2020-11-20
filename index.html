@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regressão ponderada</title>
+    <link rel="stylesheet" href="./CSS/reset.css">
+    <link rel="stylesheet" href="./CSS/style.css">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <h1 class="header__title">Regressão Linear Ponderada</h1>
+    </header>
+    <div class="container">
+        <p class="container__title">Informe o número de medições:</p>
+        <input type="number" id="num-med" class="container__input">
+        <input type="button" value="Adicionar" id="input-med" class="container__button">
+    </div>
+    <div id="med-dates" class="container__table">
+        <table class="table">
+            <tr class="rowSubtitle">
+                <th class="rowSubtitle__cellSubtitle">X</th>
+                <th class="rowSubtitle__cellSubtitle">&mu;x</th>
+                <th class="rowSubtitle__cellSubtitle">Y</th>
+                <th class="rowSubtitle__cellSubtitle">&mu;y</th>
+            </tr>
+        </table>
+        <input type="button" value="Calcular" id="calcularRegre" class="container__button">
+    </div>
+    <div id="resultConv" class="container__result">
+        <h3 class="container__result__title">Regressão Convencional</h3>
+        <table class="table__result">
+            <tr class="row__conventional">
+                <th class="column__conventional">A</th>
+                <th class="column__conventional">&mu;A</th>
+                <th class="column__conventional">B</th>
+                <th class="column__conventional">&mu;B</th>
+            </tr>
+            <tr class="row__conventional__result">
+                <td class="column__conventional__resut" id="conventionalA"></td>
+                <td class="column__conventional__resut" id="conventionalMuA"></td>
+                <td class="column__conventional__resut" id="conventionalB"></td>
+                <td class="column__conventional__resut" id="conventionalMuB"></td>
+            </tr>
+        </table>
+    </div>
+    <div id="resultPond" class="container__result container__pond">
+        <h3 class="container__result__title">Regressão Ponderada</h3>
+        <table class="table__result">
+            <tr class="row__conventional">
+                <th class="column__conventional">A</th>
+                <th class="column__conventional">&mu;A</th>
+                <th class="column__conventional">B</th>
+                <th class="column__conventional">&mu;B</th>
+            </tr>
+            <tr class="row__conventional__result">
+                <td class="column__conventional__resut" id="ponderadaA"></td>
+                <td class="column__conventional__resut" id="ponderadaMuA"></td>
+                <td class="column__conventional__resut" id="ponderadaB"></td>
+                <td class="column__conventional__resut" id="ponderadaMuB"></td>
+            </tr>
+        </table>
+    </div>
+
+    <footer class="rodape">&copy;2020 Murilo Rodrigues</footer>
+
+    <script type="module" src="./JS/main.js"></script>
+</body>
+</html>
