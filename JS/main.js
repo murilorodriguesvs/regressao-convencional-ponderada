@@ -116,6 +116,13 @@ window.addEventListener('load', function(){
         calcularSomatorio();
         RegressaoConvencional();
         RegressaoPonderada();
+
+        console.log(Apond)
+        console.log(muApond)
+        console.log(Bpond)
+        console.log(muBpond)
+
+        adicionaPonderada();
     }
 
     function verificaInput(){
@@ -186,20 +193,20 @@ window.addEventListener('load', function(){
         Btransf = Bconv;
         console.log(Btransf)
 
-        somatorioPonderada();
+        while(convergencia()){
+            somatorioPonderada();
 
-        ponderada();
-        
-        convergencia();
+            ponderada();
+        }
     }
    
     
     function somatorioPonderada(){
         for(let i = 0; i < inputNum.value; i++){
             //calcula incerteza transferida
-            sigma[i] = Math.pow(Number(coluna1[i].value), 2) + Btransf*Math.pow(Number(coluna3[i].value), 2);
+            sigma[i] = Math.sqrt(Math.pow(Number(coluna1[i].value), 2) + Btransf*Math.pow(Number(coluna3[i].value), 2));
             //calcula w
-            w[i] = 1 / sigma[i];
+            w[i] = 1 / Math.pow(sigma[i], 2);
             //calcula wx
             wx[i] = w[i]*x[i];
             //calcula wy
@@ -244,18 +251,19 @@ window.addEventListener('load', function(){
         let An = Aconv;
         let muAnn = muApond;
         let teste = Math.abs(Ann - An);
-        console.log(Apond)
-        console.log(muApond)
-        console.log(Bpond)
-        console.log(muBpond)
 
-        while(teste <= muAnn){
-            Btransf = Bpond;
-            An = Apond;
-            ponderada();
-            Ann = Apond;
-            muAnn = muApond;
-            break
+        if (teste <= muAnn){
+            return false;
+        }else{
+            return true;
         }
+    }
+
+    function adicionaPonderada(){
+        //adiciona o resultado a tabela
+        tableApond.innerHTML = `${Apond}`;
+        tableMuApond.innerHTML = `${muApond}`;
+        tableBpond.innerHTML = `${Bpond}`;
+        tableMuBpond.innerHTML = `${muBpond}`;
     }
 });
