@@ -30,6 +30,8 @@ window.addEventListener('load', function(){
     //Conjuntos de dados de entrada e calculados
     let x = [];
     let y = [];
+    let mux = []
+    let muy = []
     let xQuadrado = [];
     let yQuadrado = [];
     let xy = [];
@@ -84,7 +86,7 @@ window.addEventListener('load', function(){
             
             for(let i = 0; i < 4; i++){
                 const column = document.createElement('td');//cria colunas
-                row.appendChild(column).innerHTML = `<input type="number" class="column__input">`;//adiciona inputs nas células
+                row.appendChild(column).innerHTML = `<input type="number" class="column__input" step="0.00001">`;//adiciona inputs nas células
                 column.setAttribute('id', `coluna${i}`);//Adiciona ID nas colunas
                 column.setAttribute('class', 'column');//Adiciona a classe
             };
@@ -116,13 +118,6 @@ window.addEventListener('load', function(){
         calcularSomatorio();
         RegressaoConvencional();
         RegressaoPonderada();
-
-        console.log(Apond)
-        console.log(muApond)
-        console.log(Bpond)
-        console.log(muBpond)
-
-        adicionaPonderada();
     }
 
     function verificaInput(){
@@ -135,8 +130,7 @@ window.addEventListener('load', function(){
 
     function calcularSomatorio(){
         
-        for(let i = 0; i < inputNum.value; i++){// laço de repetição que calucula cada termo de cada medição
-            
+        for(let i = 0; i < inputNum.value; i++){//laço de repetição que calucula cada termo de cada medição
             x[i] = Number(coluna0[i].value);
             y[i] = Number(coluna2[i].value);            
             //calcula o x e y quadrado
@@ -191,20 +185,35 @@ window.addEventListener('load', function(){
 
     function RegressaoPonderada(){
         Btransf = Bconv;
-        console.log(Btransf)
 
-        while(convergencia()){
-            somatorioPonderada();
+        somatorioPonderada();
+        ponderada();
 
+        let An = Aconv;
+        let Ann = Apond;
+        let muAnn = muApond;
+        let teste = Math.abs(Ann - An);
+        
+        while(teste > muAnn){
+            console.log('o loop esta rodando')
+            Btransf = Bpond;
+            An = Apond
+
+            somatorioPonderada();           
             ponderada();
+
+            Ann = Apond;
+            muAnn = muApond;
+            teste = Math.abs(Ann - An);
         }
+
+        adicionaPonderada();
     }
    
-    
     function somatorioPonderada(){
         for(let i = 0; i < inputNum.value; i++){
             //calcula incerteza transferida
-            sigma[i] = Math.sqrt(Math.pow(Number(coluna1[i].value), 2) + Btransf*Math.pow(Number(coluna3[i].value), 2));
+            sigma[i] = Math.sqrt(Math.pow(Number(coluna1[i].value), 2) + Math.pow(Btransf, 2)*Math.pow(Number(coluna3[i].value), 2));
             //calcula w
             w[i] = 1 / Math.pow(sigma[i], 2);
             //calcula wx
@@ -216,7 +225,6 @@ window.addEventListener('load', function(){
             //calcula wxy
             wxy[i] = w[i]*x[i]*y[i];
         }
-
         calculaSomatorios()
     }
     
@@ -244,19 +252,6 @@ window.addEventListener('load', function(){
         Bpond = ((sumW*sumWXY)-(sumWX*sumWY)) / deltaPond;
         muApond = Math.sqrt(sumWXQuadrado / deltaPond);
         muBpond = Math.sqrt(sumW / deltaPond);
-    }
-
-    function convergencia(){
-        let Ann = Apond;
-        let An = Aconv;
-        let muAnn = muApond;
-        let teste = Math.abs(Ann - An);
-
-        if (teste <= muAnn){
-            return false;
-        }else{
-            return true;
-        }
     }
 
     function adicionaPonderada(){
